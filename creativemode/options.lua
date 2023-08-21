@@ -18,12 +18,12 @@ return UI.New([[
 	construct = function(menu)
 
 		-- defaults
-		if not profile.CustomStartFirstRun then
+		if not profile.CreativeModeFirstRun then
 			profile.CM_Research = true
 			profile.CM_Buildingcost = true
 			profile.CM_ExtraScouts  = true
 			profile.CM_ScoutCell = true
-			profile.CustomStartFirstRun = true
+			profile.CreativeModeFirstRun = true
 		end
 
 		-- Research

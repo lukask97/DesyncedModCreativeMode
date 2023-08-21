@@ -1,12 +1,12 @@
 {
     "id": "CreativeMode",
     "name": "Creative Mode",
-    "version_name": "0.2",
-    "version_code": 2,
+    "version_name": "0.3",
+    "version_code": 3,
     "author": "lukask97",
     "homepage": "https://github.com/lukask97/DesyncedModCreativeMode",
     "description": "A few creative functions",
-     "options": "options.lua",
+    "options": "options.lua",
     "packages": {
         "Data": {
             "name": "CreativeMode",
