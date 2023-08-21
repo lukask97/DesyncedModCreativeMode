@@ -1,4 +1,6 @@
-#A creative mode scenario for Desynced
+# A creative mode scenario for Desynced #
+
+- A Mod settings menu for toggleable features
 - All research is unlocked.
 - Buildings don't cost resources (Except for components like fabricator etc.)
 - Building are built faster
@@ -11,6 +13,6 @@ Plans for future versions:
 - Make components for free
 - infinite power / components don't use power
 - Create resource nodes
-- UI for individual settings
+
 --- 
 [Mod on Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=3023536687)
