@@ -1,0 +1,17 @@
+{
+    "id": "CreativeMode",
+    "name": "Creative Mode",
+    "version_name": "0.1",
+    "version_code": 1,
+    "author": "lukask97",
+    "homepage": "https://github.com/lukask97/DesyncedModCreativeMode",
+    "description": "A Mod for the Game Desynced the unlocks every technology and reduce the cost of Buildings to 0",
+    "packages": {
+        "Data": {
+            "name": "CreativeMode",
+            "entry": "creativemode.lua",
+            "dependencies": [ "Main/Freeplay" ],
+            "type": "Scenario"
+        }
+    }
+}
