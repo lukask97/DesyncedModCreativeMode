@@ -29,17 +29,20 @@ return UI.New([[
 			<HorizontalList><Text width=500 text="Start with extra Miner-Scouts"/><Button id=CM_ExtraScouts on_click={on_CM_ExtraScouts} width=32 height=32/></HorizontalList>
 			<HorizontalList><Text width=500 text="Equip starting Scouts with a Power Cell"/><Button id=CM_ScoutCell on_click={on_CM_ScoutCell} width=32 height=32/></HorizontalList>
 			<HorizontalList><Text width=500 text="Componets for free"/><Button id=CM_ComponentCost on_click={on_CM_ComponentCost} width=32 height=32/></HorizontalList>
+			<HorizontalList><Text width=500 text="Bots for free"/><Button id=CM_BotCost on_click={on_CM_BotCost} width=32 height=32/></HorizontalList>
+			<HorizontalList><Text width=500 text="Items for free"/><Button id=CM_ItemCost on_click={on_CM_ItemCost} width=32 height=32/></HorizontalList>
 		</VerticalList>
+
 		<Text text="Custom Values" size=15 color=title textalign=center/>
 		<VerticalList child_align=right>	
 			<HorizontalList><Text width=400 text="Amount of starting Scouts"/><Button text="Default" on_click={reset_CM_ExtraScoutsAmount} width=65 /><Text width=3 /><InputText id=CM_ExtraScoutsAmount on_commit={on_CM_ExtraScoutsAmount} default=1 min=1 max=65535 width=64 height=32 /></HorizontalList>
-			<HorizontalList><Text width=400 text="Power genrated from Power Cells"/><Button text="Default" on_click={reset_CM_PowerCellPower} width=65 /><Text width=3 /><InputText id=CM_PowerCellPower on_commit={on_CM_PowerCellPower} default=1 min=1 max=65535 width=64 height=32 /></HorizontalList>
+			<HorizontalList><Text width=400 text="Power generated from Power Cells"/><Button text="Default" on_click={reset_CM_PowerCellPower} width=65 /><Text width=3 /><InputText id=CM_PowerCellPower on_commit={on_CM_PowerCellPower} default=1 min=1 max=65535 width=64 height=32 /></HorizontalList>
 			<HorizontalList><Text width=400 text="Power Radius of Power Cells(max 255)"/><Button text="Default" on_click={reset_CM_PowerCellRadius} width=65 /><Text width=3 /><InputText id=CM_PowerCellRadius on_commit={on_CM_PowerCellRadius} default=1 min=1 max=255 width=64 height=32 /></HorizontalList>
 			<HorizontalList><Text width=400 text="View Radius of Scouts(max 255)"/><Button text="Default" on_click={reset_CM_ScoutViewRadius} width=65 /><Text width=3 /><InputText id=CM_ScoutViewRadius on_commit={on_CM_ScoutViewRadius} default=1 min=1 max=255 width=64 height=32 /></HorizontalList>
 		</VerticalList>
 	</VerticalList>
 	]], {
-		construct = function(menu)
+	construct = function(menu)
 
 		-- default values
 		if profile.CM_ExtraScoutsAmount == nil then profile.CM_ExtraScoutsAmount = 10 end
@@ -47,14 +50,14 @@ return UI.New([[
 		if profile.CM_PowerCellRadius == nil then 	profile.CM_PowerCellRadius = 10 end
 		if profile.CM_ScoutViewRadius == nil then 	profile.CM_ScoutViewRadius = 10 end
 		
-		if not profile.CreativeModeFirstRun then
-			profile.CM_Research = true
-			profile.CM_BuildingCost = true
-			profile.CM_ExtraScouts  = true
-			profile.CM_ScoutCell = true
-			profile.CM_ComponentCost =true
-			profile.CreativeModeFirstRun = true
-		end
+		if profile.CM_Research == nil then profile.CM_Research=true end
+		if profile.CM_BuildingCost == nil then profile.CM_BuildingCost = true end
+		if profile.CM_ExtraScouts == nil then profile.CM_ExtraScouts = true end
+		if profile.CM_ScoutCell == nil then profile.CM_ScoutCell = true end
+		if profile.CM_ComponentCost == nil then profile.CM_ComponentCost = true end
+		if profile.CM_BotCost == nil then profile.CM_BotCost = true end
+		if profile.CM_ItemCost == nil then profile.CM_ItemCost = false end
+		if profile.CreativeModeFirstRun == nil then profile.CreativeModeFirstRun= true end
 
 		-- Research
 		local cm_Research = profile.CM_Research
@@ -81,6 +84,18 @@ return UI.New([[
 		menu.CM_ComponentCost.icon = cm_ComponentCost and "icon_small_confirm" or nil
 		menu.CM_ComponentCost.active = cm_ComponentCost or false
 		
+		--BotCost
+		local cm_BotCost = profile.CM_BotCost
+		menu.CM_BotCost.icon = cm_BotCost and "icon_small_confirm" or nil
+		menu.CM_BotCost.active = cm_BotCost or false
+
+		--ItemCost
+		local cm_ItemCost = profile.CM_ItemCost
+		menu.CM_ItemCost.icon = cm_ItemCost and "icon_small_confirm" or nil
+		menu.CM_ItemCost.active = cm_ItemCost or false
+
+
+
 		--ExtraScoutsAmount
 		local cm_ExtraScoutsAmount = profile.CM_ExtraScoutsAmount
 		menu.CM_ExtraScoutsAmount.text = cm_ExtraScoutsAmount
@@ -128,34 +143,56 @@ return UI.New([[
 		chk.active = value
 		profile.CM_ComponentCost = value
 	end,
+	on_CM_BotCost = function(menu, chk)
+		local value = not chk.active
+		chk.icon = value and "icon_small_confirm" or nil
+		chk.active = value
+		profile.CM_BotCost = value
+	end,
+	on_CM_ItemCost = function(menu, chk)
+		local value = not chk.active
+		chk.icon = value and "icon_small_confirm" or nil
+		chk.active = value
+		profile.CM_ItemCost = value
+	end,
+	
+	-- Values --------------------------------------
 	on_CM_ExtraScoutsAmount = function(menu,chk)
 		local value = chk.text
+		if tonumber(value) == nil then MessageBox("Input is Not a number") return end
 		profile.CM_ExtraScoutsAmount = value
 	end,
 	reset_CM_ExtraScoutsAmount = function(menu,chk)
 		menu.CM_ExtraScoutsAmount.text = 3
+		profile.CM_ExtraScoutsAmount = 3
 	end,
 	on_CM_PowerCellPower = function(menu,chk)
 		local value = chk.text
+		if tonumber(value) == nil then MessageBox("Input is Not a number") return end
 		profile.CM_PowerCellPower = value
 	end,
 	reset_CM_PowerCellPower = function(menu,chk)
 		menu.CM_PowerCellPower.text = 500
+		profile.CM_PowerCellPower = 3
 	end,
 	on_CM_PowerCellRadius = function(menu,chk)
 		local value = chk.text
+		if tonumber(value) == nil then MessageBox("Input is Not a number") return end
 		profile.CM_PowerCellRadius = value
 	end,
 	reset_CM_PowerCellRadius = function(menu,chk)
 		menu.CM_PowerCellRadius.text = 10
+		profile.CM_PowerCellRadius = 3
 	end,
 
 	on_CM_ScoutViewRadius = function(menu,chk)
 		local value = chk.text
-		profile.CM_ScoutViewRadius = value
+		if tonumber(value) == nil then MessageBox("Input is Not a number") return end
+		profile.CM_ScoutViewRadius = value	
 	end,
 	reset_CM_ScoutViewRadius = function(menu,chk)
 		menu.CM_ScoutViewRadius.text = 10
+		profile.CM_ScoutViewRadius = 3
 	end,
 })
 --Are you reading this?

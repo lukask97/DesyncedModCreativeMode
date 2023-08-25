@@ -1,17 +1,17 @@
 {
     "id": "creativemode",
     "name": "Creative Mode",
-    "version_name": "0.4",
-    "version_code": 4,
+    "version_name": "0.5",
+    "version_code": 5,
     "author": "lukask97",
     "homepage": "https://github.com/lukask97/DesyncedModCreativeMode",
     "description": "A few creative functions",
     "options": "options.lua",
     "packages": {
-        "Data": {
+        "CreativeMode": {
             "name": "Creative Mode",
             "entry": "creativemode.lua",
-            "dependencies": [ "Main/Freeplay" ],
+            "dependencies": [ "Main/Data" ],
             "type": "Scenario"
         }
     }

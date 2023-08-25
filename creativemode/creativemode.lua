@@ -1,8 +1,6 @@
 local package = ...
 local profile = Game.GetProfile()
 
-
-
 function package:setup_scenario(settings)
 end
 
@@ -10,34 +8,55 @@ function package:on_world_spawn()
 end
 
 function package:init()
-	Game.GetModPackage("Main/Freeplay").on_player_faction_spawn = nil
+	--Game.GetModPackage("Main/Freeplay").on_player_faction_spawn = nil
 
 	--Remove annoying beep of StopVoice. Otherwise will there be beep when skip all Talkinghead Poupups
 	data.fx.fx_ui_WINDOW_TUT_NEXT.sound =  	"creativemode/silence.ogg" 
 	data.fx.fx_ui_WINDOW_TUT_POPOUT.sound = "creativemode/silence.ogg" 
 
-	--Free Buildings
-	if profile.CM_BuildingCost then
-		for k,frame in pairs(data.frames) do	
-			if data.frames[k].construction_recipe ~= nil then 
-				if data.frames[k].construction_recipe.ingredients ~= nil then 
-					data.frames[k].construction_recipe.ingredients = { }
-					data.frames[k].construction_recipe.ticks = 1
-				end	
-			end		
+
+	if profile.CM_ItemCost then
+		for k, item in pairs (data.items) do
+			if item and item.production_recipe then
+				item.production_recipe.ingredients = {}
+				if type(item.production_recipe) == "table" then 
+					for p,m in pairs(item.production_recipe.producers) do
+						item.production_recipe.producers[p] = 1
+					end
+				end
+			end
 		end
 	end
-	--FreeComponent
+
 	if profile.CM_ComponentCost then
-		for k,val in pairs(data.components) do	
-			if data.components[k].production_recipe ~= nil then 
-				if type(data.components[k].production_recipe) == "table" then 
-					for p,m in pairs(data.components[k].production_recipe.producers) do
-						data.components[k].production_recipe.producers[p] = 1
+		for k, component in pairs (data.components) do
+			if component and component.production_recipe then
+				component.production_recipe.ingredients = {}
+				if type(component.production_recipe) == "table" then 
+					for p,m in pairs(component.production_recipe.producers) do
+						component.production_recipe.producers[p]	 = 1
 					end
-					data.components[k].production_recipe.ingredients = { }
 				end
-			end		
+
+			end
+		end
+	end
+
+	if profile.CM_BuildingCost or profile.CM_BotCost then
+		for k, frame in pairs (data.frames) do
+			if frame and frame.construction_recipe and profile.CM_BuildingCost then
+				frame.construction_recipe.ingredients = {}
+				frame.construction_recipe.ticks = 1
+			end
+			if frame and frame.production_recipe and profile.CM_BotCost then
+				frame.production_recipe.ingredients = {}
+				if type(frame.production_recipe) == "table" then 
+					for p,m in pairs(frame.production_recipe.producers) do
+						frame.production_recipe.producers[p] = 1
+					end
+				end
+				
+			end
 		end
 	end
 
@@ -55,6 +74,7 @@ function package:on_player_faction_spawn(faction, is_respawn)
 	faction.home_location = GetPlayerFactionHomeOnGround()
 	local loc = faction.home_location
 
+	
 	-- lander bot
 	local lander = Map.CreateEntity(faction, "f_bot_2m_as")
 	lander:AddComponent("c_deployment", "hidden")
@@ -72,6 +92,7 @@ function package:on_player_faction_spawn(faction, is_respawn)
 	faction.home_entity = lander
 
 
+
 	if profile.CM_ExtraScouts then
 		spawn_bots(faction,profile.CM_ExtraScoutsAmount ,loc)
 	else 
@@ -79,12 +100,15 @@ function package:on_player_faction_spawn(faction, is_respawn)
 	end
 	
 
+
+
+
+
 	--Research Unlocked
 	if profile.CM_Research then
 		for k,tech in pairs(data.techs) do
 			faction:Unlock(k)
 		end
-
 		-- Skip TalkingHead Popups
 		UI.Run(function()
 			while IsTalkingHeadActive() do
@@ -117,3 +141,7 @@ function spawn_bots(faction,num,loc)
 	end
 
 end
+
+
+
+
