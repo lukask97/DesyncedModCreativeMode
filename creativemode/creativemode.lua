@@ -108,13 +108,7 @@ function package:on_player_faction_spawn(faction, is_respawn)
 	if profile.CM_Research then
 		for k,tech in pairs(data.techs) do
 			faction:Unlock(k)
-		end
-		-- Skip TalkingHead Popups
-		UI.Run(function()
-			while IsTalkingHeadActive() do
-				CloseTalkingHead()
-			end
-		end)	
+		end	
 	else
 		--default_unlock
 		faction:Unlock("t_robot_tech_basic")
