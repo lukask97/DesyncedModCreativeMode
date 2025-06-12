@@ -1,8 +1,8 @@
 {
     "id": "creativemode",
     "name": "Creative Mode",
-    "version_name": "0.5",
-    "version_code": 5,
+    "version_name": "0.8",
+    "version_code": 8,
     "author": "lukask97",
     "homepage": "https://github.com/lukask97/DesyncedModCreativeMode",
     "description": "A few creative functions",

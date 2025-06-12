@@ -173,7 +173,7 @@ return UI.New([[
 	end,
 	reset_CM_PowerCellPower = function(menu,chk)
 		menu.CM_PowerCellPower.text = 500
-		profile.CM_PowerCellPower = 3
+		profile.CM_PowerCellPower = 500
 	end,
 	on_CM_PowerCellRadius = function(menu,chk)
 		local value = chk.text
@@ -182,7 +182,7 @@ return UI.New([[
 	end,
 	reset_CM_PowerCellRadius = function(menu,chk)
 		menu.CM_PowerCellRadius.text = 10
-		profile.CM_PowerCellRadius = 3
+		profile.CM_PowerCellRadius = 10
 	end,
 
 	on_CM_ScoutViewRadius = function(menu,chk)
@@ -192,7 +192,7 @@ return UI.New([[
 	end,
 	reset_CM_ScoutViewRadius = function(menu,chk)
 		menu.CM_ScoutViewRadius.text = 10
-		profile.CM_ScoutViewRadius = 3
+		profile.CM_ScoutViewRadius = 10
 	end,
 })
 --Are you reading this?
